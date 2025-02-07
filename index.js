@@ -15,9 +15,11 @@ app.get('/cart-total', (req, res) => {
   let newItemPrice = parseFloat(req.query.newItemPrice);
   let cartTotal = parseFloat(req.query.cartTotal);
 
-  cartTotal = cartTotal + newItemPrice;
+  // cartTotal = cartTotal + newItemPrice;
 
-  res.send(cartTotal.toString());
+  let total = cartTotal + newItemPrice
+
+  res.send(total.toString());
 });
 
 // /cart-total?newItemPrice=1200&cartTotal=0
@@ -33,7 +35,9 @@ function discountOnMembershipStatus(cartTotal, isMember) {
     finalCartTotal = cartTotal;
   }
 
-  return `The final cart total after checking membership status is : ${finalCartTotal.toString()}`;
+  // return `The final cart total after checking membership status is : ${finalCartTotal.toString()}`;
+
+  return finalCartTotal.toString();
 }
 
 app.get('/membership-discount', (req, res) => {
@@ -53,7 +57,10 @@ app.get('/membership-discount', (req, res) => {
 function calculatetaxOnCartTotal(cartTotal, taxRate) {
   let taxDeduction = (cartTotal * taxRate) / 100;
 
-  return `Tax dedution on total cart amount : ${taxDeduction.toString()}`;
+  // return `Tax dedution on total cart amount : ${taxDeduction.toString()}`;
+
+  return taxDeduction.toString();
+
 }
 
 app.get('/calculate-tax', (req, res) => {
@@ -74,14 +81,18 @@ function estimeDaysToDeliver(shippingMethod, distance) {
   if (shippingMethod === 'standard') {
     days = distance / standardDeliveryDistancePerDay;
   }
-
-  if (shippingMethod === 'express') {
+  else if (shippingMethod === 'express') {
     days = distance / expressDeliveryDistancePerDay;
+  }
+  else {
+    return;
   }
 
   // could have done if-else instead of if-if but thought of elaborating and simplifying the code
 
-  return `Estimated delivery Time in ${shippingMethod} is ${days.toString()} days `;
+  // return `Estimated delivery Time in ${shippingMethod} is ${days.toString()} days `;
+
+  return days.toString();
 }
 
 app.get('/estimate-delivery', (req, res) => {
@@ -111,10 +122,13 @@ app.get('/shipping-cost', (req, res) => {
 
   let result = calculateShippingCost(weight, distance);
 
-  res.send(
-    'The total shipping cost based on weight and distance is : ' +
-      result.toString()
-  );
+  // res.send(
+  //   'The total shipping cost based on weight and distance is : ' +
+  //     result.toString()
+  // );
+
+  res.send(result.toString());
+
 });
 
 // /shipping-cost?weight=2&distance=600
@@ -124,7 +138,8 @@ app.get('/shipping-cost', (req, res) => {
 function calculateLoyaltyPoints(purchaseAmount) {
   let loyaltyPoints = purchaseAmount * loyaltyRate;
 
-  return 'The loyalty points earned : ' + loyaltyPoints.toString();
+  // return 'The loyalty points earned : ' + loyaltyPoints.toString();
+  return loyaltyPoints.toString();
 }
 
 app.get('/loyalty-points', (req, res) => {
